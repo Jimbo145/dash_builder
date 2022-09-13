@@ -17,12 +17,87 @@ EOF
 
 # Disable timesyncd for better boot time
 RUN <<EOF
-# systemctl disable systemd-timesyncd
-# systemctl disable cups.service
-# systemctl disable avahi-daemon.service
-# systemctl disable dphys-swapfile.service
-# systemctl disable apt-daily.service
-# systemctl disable keyboard-setup.service
-# systemctl disable raspi-config.service
-# systemctl disable triggerhappy.service
+ systemctl disable systemd-timesyncd
+ systemctl disable cups.service
+ systemctl disable avahi-daemon.service
+ systemctl disable dphys-swapfile.service
+ systemctl disable apt-daily.service
+ systemctl disable keyboard-setup.service
+ systemctl disable raspi-config.service
+ systemctl disable triggerhappy.service
+EOF
+
+RUN <<EOF
+cat <<EOT >> /boot/config.txt
+hdmi_force_hotplug=1
+max_usb_current=1
+hdmi_group=2
+hdmi_mode=1
+hdmi_mode=87
+hdmi_cvt 480 800 60 6 0 0 0
+hdmi_drive=2
+display_rotate=1
+
+dtoverlay=vc4-kms-v3d
+
+boot_delay=0
+EOT
+EOF
+
+# CAN settings
+RUN <<EOF
+cat <<EOT >> /etc/network/interfaces
+allow-hotplug can0
+iface can0 can static
+    bitrate 33330
+EOT
+EOF
+
+# setup access point
+RUN <<EOF
+apt-get install -y hostapd
+systemctl unmask hostapd
+systemctl enable hostapd
+apt-get install -y dnsmasq
+cat <<EOT >> /etc/dhcpcd.conf
+interface wlan0
+    static ip_address=192.168.4.1/24
+    nohook wpa_supplicant
+EOT
+cat <<EOT >> /etc/dnsmasq.conf 
+interface=wlan0 # Listening interface
+dhcp-range=192.168.4.2,192.168.4.20,255.255.255.0,24h
+                # Pool of IP addresses served via DHCP
+domain=wlan     # Local wireless DNS domain
+address=/gw.wlan/192.168.4.1
+                # Alias for this router
+EOT
+cat <<EOT >> /etc/hostapd/hostapd.conf
+country_code=US
+interface=wlan0
+ssid=SAABnet
+hw_mode=a
+channel=36
+macaddr_acl=0
+auth_algs=1
+ignore_broadcast_ssid=0
+wpa=2
+wpa_passphrase=Wasaabi
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP
+rsn_pairwise=CCMP
+EOT
+EOF
+
+# configure memory split and disable screensaver, set hostname
+RUN <<EOF
+raspi-config nonint do_memory_split 256
+raspi-config nonint do_hostname SAAB
+sed -i 's/apt-get install realvnc-vnc-server/apt-get install -y realvnc-vnc-server/g' /usr/bin/raspi-config
+raspi-config nonint do_vnc 0
+raspi-config nonint do_ssh 0
+raspi-config nonint do_wifi_country US
+raspi-config nonint do_blanking 1
+rfkill unblock wlan
+
 EOF

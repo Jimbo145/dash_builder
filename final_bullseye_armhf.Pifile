@@ -1,3 +1,0 @@
-FROM compile_bullseye_armhf.img
-
-source final_bullseye.Pifile

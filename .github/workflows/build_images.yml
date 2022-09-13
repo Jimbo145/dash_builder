@@ -153,12 +153,6 @@ jobs:
               osname: "bullseye",
               ostype: "Debian"
             }
-          - {
-              name: "Debian bullseye armhf",
-              arch: "armhf",
-              osname: "bullseye",
-              ostype: "Debian"
-            }
     name: 'Upload release:  ${{ matrix.config.name }}'
     steps:
       - 

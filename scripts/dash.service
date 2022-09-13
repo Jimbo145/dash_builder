@@ -1,6 +1,6 @@
 [Unit]
 Description=Dash
-After=bluetooth.target
+After=multi-user.target
 
 
 [Service]
