@@ -11,7 +11,7 @@ INSTALL "scripts/openauto.ini" "/home/pi/dash/openauto.ini"
 # Add udev rules
 INSTALL "scripts/51-dashusb.rules" "/etc/udev/rules.d/"
 
-RUN <<'EOF'
+RUN <<'EOF'xorg
 chown pi:pi /home/pi/dash/openauto.ini
 EOF
 
@@ -23,6 +23,8 @@ EOF
 RUN mkdir -p /usr/share/X11/xorg.conf.d
 
 INSTALL "scripts/40-libinput.conf" "/usr/share/X11/xorg.conf.d/40-libinput.conf"
+
+
 
 # configure memory split and disable screensaver, set hostname, Setup vnc, enable ssh
 RUN <<EOF

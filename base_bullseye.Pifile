@@ -18,38 +18,59 @@ EOF
 # Disable timesyncd for better boot time
 RUN <<EOF
  systemctl disable systemd-timesyncd
- systemctl disable cups.service
- systemctl disable avahi-daemon.service
- systemctl disable dphys-swapfile.service
- systemctl disable apt-daily.service
- systemctl disable keyboard-setup.service
- systemctl disable raspi-config.service
- systemctl disable triggerhappy.service
+ #systemctl disable cups.service
+ #systemctl disable avahi-daemon.service
+ #systemctl disable dphys-swapfile.service
+ #systemctl disable apt-daily.service
+ #systemctl disable keyboard-setup.service
+ #systemctl disable raspi-config.service
+ #systemctl disable triggerhappy.service
 EOF
 
 RUN <<EOF
 cat <<EOT >> /boot/config.txt
-hdmi_force_hotplug=1
-max_usb_current=1
-hdmi_group=2
-hdmi_mode=1
-hdmi_mode=87
-hdmi_cvt 480 800 60 6 0 0 0
-hdmi_drive=2
-display_rotate=1
+#hdmi_force_hotplug=1
+#max_usb_current=1
+#hdmi_group=2
+#hdmi_mode=1
+#hdmi_mode=87
+#hdmi_cvt 480 800 60 6 0 0 0
+#hdmi_drive=2
+#display_rotate=1
+
+arm_freq=1800
+core_freq=500
 
 dtoverlay=vc4-kms-v3d
 
+dtoverlay=disable-bt
+
+initial_turbo=30
+force_turbo=1
+
+gpio=16=op,dh
+
 boot_delay=0
+
+max_framebuffers=2
+arm_64bit=1
+
+
+dtparam=spi=on
+#dtoverlay=mcp2515-can0,oscillator=8000000,interrupt=25
+#dtoverlay=spi0-2cs
 EOT
 EOF
 
 # CAN settings
 RUN <<EOF
 cat <<EOT >> /etc/network/interfaces
-allow-hotplug can0
-iface can0 can static
-    bitrate 33330
+auto eth1
+allow-hotplug eth1
+iface eth1 inet manual
+#allow-hotplug can0
+#iface can0 can static
+#    bitrate 33330
 EOT
 EOF
 
@@ -76,8 +97,8 @@ cat <<EOT >> /etc/hostapd/hostapd.conf
 country_code=US
 interface=wlan0
 ssid=SAABnet
-hw_mode=a
-channel=36
+hw_mode=g
+channel=7
 macaddr_acl=0
 auth_algs=1
 ignore_broadcast_ssid=0
@@ -93,11 +114,7 @@ EOF
 RUN <<EOF
 raspi-config nonint do_memory_split 256
 raspi-config nonint do_hostname SAAB
-sed -i 's/apt-get install realvnc-vnc-server/apt-get install -y realvnc-vnc-server/g' /usr/bin/raspi-config
-raspi-config nonint do_vnc 0
-raspi-config nonint do_ssh 0
 raspi-config nonint do_wifi_country US
-raspi-config nonint do_blanking 1
 rfkill unblock wlan
 
 EOF

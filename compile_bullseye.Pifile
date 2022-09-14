@@ -9,7 +9,7 @@ EOF
 # add in pi ux tweaks (icons + lxpanel plugins)
 RUN <<EOF
 apt-get -y install pixflat-icons lxplug-bluetooth lxplug-volumepulse lxplug-network
-bash -c "cd /home/pi && sudo -u pi git clone -b SaabCustomizations  https://github.com/Jimbo145/dash"
+bash -c "cd /home/pi && sudo -u pi git clone https://github.com/Jimbo145/dash"
 bash -c "cd /home/pi/dash && sed -i 's/\(^\s*\)\(make\)\($\)/\1make -j$(nproc)/g' install.sh"
 EOF
 RUN <<'EOF'
