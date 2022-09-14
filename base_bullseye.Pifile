@@ -115,6 +115,5 @@ RUN <<EOF
 raspi-config nonint do_memory_split 256
 raspi-config nonint do_hostname SAAB
 raspi-config nonint do_wifi_country US
-rfkill unblock wlan
 
 EOF
