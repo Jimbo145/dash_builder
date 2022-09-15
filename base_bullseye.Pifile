@@ -11,20 +11,13 @@ EOF
 
 # Disable boot text
 RUN <<EOF
-echo "logo.nologo" >>  /boot/cmdline.txt
+echo "logo.nologo loglevel=3 quiet plymouth.ignore-serial-consoles fastboot" >>  /boot/cmdline.txt
 EOF
 
 
 # Disable timesyncd for better boot time
 RUN <<EOF
- systemctl disable systemd-timesyncd
- #systemctl disable cups.service
- #systemctl disable avahi-daemon.service
- #systemctl disable dphys-swapfile.service
- #systemctl disable apt-daily.service
- #systemctl disable keyboard-setup.service
- #systemctl disable raspi-config.service
- #systemctl disable triggerhappy.service
+
 EOF
 
 RUN <<EOF

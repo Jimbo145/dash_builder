@@ -28,5 +28,15 @@ INSTALL "scripts/40-libinput.conf" "/usr/share/X11/xorg.conf.d/40-libinput.conf"
 
 # configure memory split and disable screensaver, set hostname, Setup vnc, enable ssh
 RUN <<EOF
+raspi-config nonint do_vnc 0
+raspi-config nonint do_ssh 1
 
+systemctl disable systemd-timesyncd
+systemctl disable cups.service
+systemctl disable avahi-daemon.service
+systemctl disable dphys-swapfile.service
+systemctl disable apt-daily.service
+systemctl disable keyboard-setup.service
+#systemctl disable raspi-config.service
+systemctl disable triggerhappy.service
 EOF
