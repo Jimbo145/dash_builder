@@ -27,6 +27,6 @@ INSTALL "scripts/40-libinput.conf" "/usr/share/X11/xorg.conf.d/40-libinput.conf"
 
 
 # configure memory split and disable screensaver, set hostname, Setup vnc, enable ssh
-RUN <<'EOF'
-raspi-config nonint do_memory_split 128
+RUN <<EOF
+
 EOF
