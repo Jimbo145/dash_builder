@@ -24,6 +24,6 @@ bash -c "sudo -u pi mkdir -p /home/pi/.config/openDsh"
 EOF
 
 # Add autologin and dash service
-# source dash_service.Pifile
+source dash_service.Pifile
 PUMP 1000M
 source pulseaudio_hfp_ofono.Pifile
