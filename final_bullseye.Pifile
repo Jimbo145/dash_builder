@@ -24,19 +24,23 @@ RUN mkdir -p /usr/share/X11/xorg.conf.d
 
 INSTALL "scripts/40-libinput.conf" "/usr/share/X11/xorg.conf.d/40-libinput.conf"
 
+RUN <<'EOF'
+apt-get -y install build-essential git libsystemd-dev
+git clone https://github.com/xorbit/LiFePO4wered-Pi.git
+cd LiFePO4wered-Pi/
+make all
+sudo make user-install
 
+EOF
 
 # configure memory split and disable screensaver, set hostname, Setup vnc, enable ssh
+#sed -i ':a;N;\$!ba;s/\n/ /g' /boot/cmdline.txt
 RUN <<EOF
-raspi-config nonint do_vnc 1
-raspi-config nonint do_ssh 0
 
-systemctl disable systemd-timesyncd
-systemctl disable cups.service
-systemctl disable avahi-daemon.service
-systemctl disable dphys-swapfile.service
-systemctl disable apt-daily.service
-systemctl disable keyboard-setup.service
-#systemctl disable raspi-config.service
-systemctl disable triggerhappy.service
+
+
+
 EOF
+
+
+INSTALL scripts/firstrun.sh /boot/firstrun.sh

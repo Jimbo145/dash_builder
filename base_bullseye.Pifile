@@ -2,51 +2,59 @@ PUMP 1500M
 
 # Update OS and sources
 RUN <<EOF
+export LC_ALL=C
+export LANG=en_US.UTF-8
+echo -e 'LANG="en_US.UTF-8"\nLANGUAGE="en_US:en"\n' > /etc/default/locale
+locale-gen 
+
+dpkg-reconfigure locales
+
 apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade
 apt-get install -y sl
 apt-get autoremove -y
+
+useradd -m pi
+echo pi:saab | chpasswd
+
+sudo adduser pi sudo
+
+apt-get  install -y ntp
+
+apt-get install -y ntpdate
+
+service ntp stop
+ntpdate 0.us.pool.ntp.org
+service ntp start
 EOF
 
 
 # Disable boot text
 RUN <<EOF
-echo "logo.nologo loglevel=3 quiet plymouth.ignore-serial-consoles fastboot" >>  /boot/cmdline.txt
+echo -n "logo.nologo loglevel=3 quiet plymouth.ignore-serial-consoles fastboot systemd.run=/boot/firstrun.sh systemd.run_success_action=reboot systemd.unit=kernel-command-line.target" >>  /boot/cmdline.txt
 EOF
 
 
-# Disable timesyncd for better boot time
-RUN <<EOF
-
-EOF
 
 RUN <<EOF
 cat <<EOT >> /boot/config.txt
-#hdmi_force_hotplug=1
-#max_usb_current=1
-#hdmi_group=2
-#hdmi_mode=1
-#hdmi_mode=87
-#hdmi_cvt 480 800 60 6 0 0 0
-#hdmi_drive=2
-#display_rotate=1
-
+[pi4]
 arm_freq=1800
 core_freq=500
-
 dtoverlay=vc4-kms-v3d
+initial_turbo=30
+force_turbo=1
+
+max_framebuffers=2
+arm_64bit=1
+[all]
 
 dtoverlay=disable-bt
 
-initial_turbo=30
-force_turbo=1
 
 gpio=16=op,dh
 
 boot_delay=0
-
-max_framebuffers=2
-arm_64bit=1
 
 
 dtparam=spi=on
@@ -58,17 +66,20 @@ EOF
 # CAN settings
 RUN <<EOF
 cat <<EOT >> /etc/network/interfaces
-auto eth0
-allow-hotplug eth0
-iface eth0 inet manual
 
-auto eth1
-allow-hotplug eth1
-iface eth1 inet manual
 #allow-hotplug can0
 #iface can0 can static
 #    bitrate 33330
 EOT
+EOF
+
+#Setup network interfaces
+RUN <<EOF
+apt-get -y install network-manager
+apt-get install -y  links
+
+raspi-config nonint do_netconf 2
+
 EOF
 
 # setup access point
@@ -76,27 +87,31 @@ RUN <<EOF
 
 
 apt-get install -y vim
-apt-get install -y dnsmasq
 cat <<EOT >> /etc/dhcpcd.conf
-interface wlan0
-    static ip_address=192.168.4.1/24
-    nohook wpa_supplicant
-EOT
-cat <<EOT >> /etc/dnsmasq.conf 
-interface=wlan0 # Listening interface
-dhcp-range=192.168.4.2,192.168.4.20,255.255.255.0,24h
-                # Pool of IP addresses served via DHCP
-domain=wlan     # Local wireless DNS domain
-address=/gw.wlan/192.168.4.1
-                # Alias for this router
+denyinterfaces wlan0
 EOT
 
+
+#nmcli con add type wifi ifname wlan0 con-name SAABnet autoconnect yes ssid SAABnet
+#nmcli con modify SAABnet 802-11-wireless.mode ap 802-11-wireless.band ap ipv4.method shared
+#nmcli con modify SAABnet wifi-sec.key-mgmt wpa-psk
+#nmcli con modify SAABnet wifi-sec.psk "585924202"
+#nmcli con up SAABnet
+
+
+
+EOF
 
 # configure memory split and disable screensaver, set hostname
 RUN <<EOF
-raspi-config nonint do_memory_split 256
-raspi-config nonint do_hostname SAAB
 raspi-config nonint do_wifi_country US
 raspi-config nonint do_ssh 0
 
+/usr/lib/raspberrypi-sys-mods/imager_custom set_keymap 'us'
+/usr/lib/raspberrypi-sys-mods/imager_custom set_timezone 'America/New_York'
+
 EOF
+
+
+
+INSTALL "scripts/userconf" "/boot/userconf"
