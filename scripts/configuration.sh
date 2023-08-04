@@ -35,11 +35,11 @@ cat <<EOT >> /etc/dhcpcd.conf
 denyinterfaces wlan0
 EOT
 # configure memory split and disable screensaver, set hostname
-raspi-config nonint do_memory_split 256
+raspi-config nonint do_memory_split 128
 raspi-config nonint do_hostname SAAB
 sed -i 's/apt-get install realvnc-vnc-server/apt-get install -y realvnc-vnc-server/g' /usr/bin/raspi-config
-raspi-config nonint do_vnc 1
+raspi-config nonint do_vnc 0
 raspi-config nonint do_wifi_country US
-raspi-config nonint do_ssh 1
+raspi-config nonint do_ssh 0
 /usr/lib/raspberrypi-sys-mods/imager_custom set_keymap 'us'
 /usr/lib/raspberrypi-sys-mods/imager_custom set_timezone 'America/New_York'
