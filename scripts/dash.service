@@ -1,6 +1,6 @@
 [Unit]
 Description=Dash
-After=multi-user.target
+After=bluetooth.target
 
 
 [Service]
@@ -21,3 +21,5 @@ TimeoutSec=infinity
 
 [Install]
 WantedBy=graphical.target
+
+
