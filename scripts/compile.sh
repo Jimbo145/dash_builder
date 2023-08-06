@@ -7,7 +7,7 @@ apt-get -y install gstreamer1.0-plugins-good gstreamer1.0-omx xserver-xorg-video
 
 # add in pi ux tweaks (icons + lxpanel plugins)
 apt-get -y install pixflat-icons lxplug-bluetooth lxplug-volumepulse lxplug-network
-cd /home/pi && sudo -u pi git clone https://github.com/openDsh/dash
+cd /home/pi && sudo -u pi git clone https://github.com/Jimbo145/dash
 cd /home/pi/dash && sed -i 's/\(^\s*\)\(make\)\($\)/\1make -j$(nproc)/g' install.sh
 cp /home/pi/dash_pimod.patch /home/pi/dash/
 cd /home/pi/dash && git apply dash_pimod.patch
