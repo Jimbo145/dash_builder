@@ -63,7 +63,7 @@ sudo bash -c 'cat > /usr/share/xsessions/saab.desktop' << EOF
 Encoding=UTF-8
 Name=Saab
 Comment=Start an openDsh Kiosk
-Exec=/home/pi/dash/bin/dash
-TryExec=/home/pi/dash/bin/dash
+Exec=/home/pi/dash/run_dash.sh
+TryExec=/home/pi/dash/run_dash.sh
 Icon=google-chrome
 EOF

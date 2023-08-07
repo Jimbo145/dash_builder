@@ -21,7 +21,7 @@ ntpdate 0.us.pool.ntp.org
 service ntp start
 
 # Disable boot text
-echo -n "logo.nologo loglevel=3 quiet plymouth.ignore-serial-consoles fastboot systemd.run_success_action=reboot systemd.unit=kernel-command-line.target" >>  /boot/cmdline.txt
+sed -i 's/quiet/logo.nologo\ loglevel=3\ quiet\ plymouth.ignore-serial-consoles\ fastboot\/g'
 
 
 # clear apt

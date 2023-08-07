@@ -10,8 +10,9 @@ INSTALL "scripts/51-dashusb.rules" "/etc/udev/rules.d/"
 
 INSTALL "scripts/50-monitor.conf" "/etc/X11/xorg.conf.d/50-monitor.conf"
 INSTALL "scripts/52-touchscreen-rotate.conf" "/etc/X11/xorg.conf.d/52-touchscreen-rotate.conf"
-INSTALL scripts/firstrun.sh /boot/firstrun.sh
+INSTALL scripts/firstrun.sh /home/pi/dash/firstrun.sh
 
 INSTALL 777 "scripts/final.sh" "/root/run.sh"
 RUN bash /root/run.sh 
 RUN rm /root/run.sh
+
