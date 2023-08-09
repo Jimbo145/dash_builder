@@ -10,7 +10,6 @@ max_framebuffers=2
 arm_64bit=1
 [all]
 enable_uart=1
-dtoverlay=disable-bt
 gpio=27=op,dh
 boot_delay=0
 dtparam=spi=on
@@ -20,7 +19,6 @@ dtparam=audio=off
 hdmi_group=2
 hdmi_mode=87
 hdmi_timings=400 0 100 10 140 1280 10 20 20 2 0 0 0 60 0 43000000 3
-dtoverlay=disable-bt
 EOT
 
 # CAN settings

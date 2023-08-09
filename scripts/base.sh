@@ -20,10 +20,6 @@ service ntp stop
 ntpdate 0.us.pool.ntp.org
 service ntp start
 
-# Disable boot text
-sed -i 's/quiet/logo.nologo\ loglevel=3\ quiet\ plymouth.ignore-serial-consoles\ fastboot\/g'
-
-
 # clear apt
 apt-get clean autoclean
 apt-get autoremove --yes
