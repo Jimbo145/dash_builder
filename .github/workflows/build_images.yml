@@ -106,7 +106,7 @@ jobs:
             ${{ steps.packagezip.outputs.MD5ZIPHASHFILE }}
 # Create Release
   release:
-    runs-on: pi
+    runs-on: self-hosted
     needs: [ version, build ]
     name: 'Create release'
     outputs:
