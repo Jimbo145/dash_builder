@@ -23,7 +23,6 @@ jobs:
             else
               echo "version=${version}" >> $GITHUB_ENV
             fi         
-            version: ${{ github.event.inputs.version }}
   build:
     runs-on: ${{ matrix.host }}
     needs: [ version ]
