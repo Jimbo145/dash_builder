@@ -10,7 +10,7 @@ jobs:
   version:
     outputs:
       version: ${{ steps.get_version.outputs.version }}
-    runs-on: "pi"
+    runs-on: "self-hosted"
     steps:
       - 
         name: Get the version
@@ -31,7 +31,7 @@ jobs:
       max-parallel: 3
       matrix:
         host: [
-          "pi",
+          "self-hosted",
           #"macos-10.15",
         ]
         config:
@@ -132,7 +132,7 @@ jobs:
       max-parallel: 3
       matrix:
         host: [
-          "pi",
+          "self-hosted",
           #"macos-10.15",
         ]
         config:
