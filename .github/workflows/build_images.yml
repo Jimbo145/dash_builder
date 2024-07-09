@@ -16,15 +16,14 @@ jobs:
         name: Get the version
         id: get_version
         run: |
-          if [ -z "$version" ]
-          then
-                version=$(date '+%Y%m%d')
-                echo ::set-output name=version::"${version}"
-          else
-                echo ::set-output name=version::"${version}"
-          fi
-        env:
-          version: ${{ github.event.inputs.version }}
+            if [ -z "$version" ]
+            then
+              version=$(date '+%Y%m%d')
+              echo "version=${version}" >> $GITHUB_ENV
+            else
+              echo "version=${version}" >> $GITHUB_ENV
+            fi         
+            version: ${{ github.event.inputs.version }}
   build:
     runs-on: ${{ matrix.host }}
     needs: [ version ]
