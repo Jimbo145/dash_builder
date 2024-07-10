@@ -1,30 +1,25 @@
 PUMP 2000M
 
 
-COMMENT "Compile Bullseye"
 
 
 # Update OS and sources
 
-COMMENT "install pimod"
 INSTALL 777 "patches/dash_pimod.patch" "/home/pi/dash_pimod.patch"
-COMMENT "install compile"
+
 INSTALL 777 "scripts/compile.sh" "/root/run.sh"
 
 RUN bash /root/run.sh 
 RUN rm /root/run.sh
 
-COMMENT "install lifepo"
 INSTALL 777 "scripts/lifepo.sh" "/root/run.sh"
 RUN bash /root/run.sh 
 RUN rm /root/run.sh
 
-COMMENT "install saab"
 INSTALL 777 "scripts/saab.sh" "/root/run.sh"
 RUN bash /root/run.sh 
 RUN rm /root/run.sh
 
-COMMENT "install dash"
 INSTALL 777 "scripts/run_dash.sh" "/home/pi/dash/run_dash.sh"
 
 # Add autologin and dash service
