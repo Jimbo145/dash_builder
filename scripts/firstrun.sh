@@ -6,18 +6,11 @@ nmcli con modify SAABnet wifi-sec.key-mgmt wpa-psk
 nmcli con modify SAABnet wifi-sec.psk "1234567890"
 nmcli con up SAABnet
 
-# Disable boot text
-sed -i 's/quiet/logo.nologo\ loglevel=3\ quiet\ plymouth.ignore-serial-consoles\ fastboot\/g'
-
-systemctl disable systemd-timesyncd
-systemctl disable cups.service
-systemctl disable avahi-daemon.service
-systemctl disable dphys-swapfile.service
-systemctl disable apt-daily.service
-systemctl disable keyboard-setup.service
-#systemctl disable raspi-config.service
-systemctl disable triggerhappy.service
-systemctl disable apt-daily-upgrade.service
-systemctl disable man-db.service
-systemctl disable ntp.service
-systemctl disable rpi-eeprom-update
+ln -fs /lib/systemd/system/getty@.service /etc/systemd/system/getty.target.wants/getty@tty1.service
+cat > /etc/systemd/system/getty@tty1.service.d/autologin.conf << EOCAT
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty --autologin pi --noclear %I \$TERM
+EOCAT
+sed /etc/lightdm/lightdm.conf -i -e "s/^\(#\|\)autologin-user=.*/autologin-user=pi/"
+sed /etc/lightdm/lightdm.conf -i -e "s/^\(#\|\)xserver-command=.*/xserver-command=X -nocursor -s 0 -dpms/"

@@ -12,7 +12,7 @@ apt-get install -y sl
 useradd -m pi
 echo pi:opendsh | chpasswd
 
-sudo adduser pi sudo
+adduser pi sudo
 
 # Setup ntp
 apt-get install -y ntp ntpdate

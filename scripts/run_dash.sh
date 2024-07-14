@@ -1,7 +1,7 @@
 #!/bin/bash
 
+XDG_RUNTIME_DIR=/run/user/1000
 while true; do
-    /home/pi/dash/bin/dash
-    echo "Program exited. Restarting..."
-    sleep 1  # Wait for a moment before restarting
-done
+    exec startx /home/pi/dash/bin/dash
+    sleep 1
+done 

@@ -18,6 +18,10 @@ The below process is performed on both armhf and arm64. This takes about 3hours 
 1. Clone dash repo
 1. Setup Dash
 
+### Run hardware required firstrun
+Some items cannot be setup using pimod, mainly hardware required items.
+run /user/pi/firstrun.sh with all hardware attached
+
 ## Credits
 
 @matt2005
