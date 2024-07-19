@@ -70,7 +70,7 @@ EOF
 
 # Disable boot text
 #sed -i 's/quiet/logo.nologo\ loglevel=3\ quiet\ plymouth.ignore-serial-consoles\ fastboot/g' /boot//firmware/cmdline.txt
-sed -i '1s/$/ fastboot quiet logo.nologo plymouth.ignore-serial-consoles/' /boot/firmware/cmdline.txt 
+sed -i '1s/$/ fastboot quiet logo.nologo splash plymouth.ignore-serial-consoles/' /boot/firmware/cmdline.txt 
 
 #systemctl disable systemd-timesyncd
 systemctl disable cups.service
@@ -87,3 +87,5 @@ systemctl disable rpi-eeprom-update
 
 # Enable SSH
 systemctl enable ssh
+
+systemctl enable dash

@@ -4,7 +4,8 @@ After=multi-user.target
 
 
 [Service]
-Type=simple
+Type=oneshot
+RemainAfterExit=true
 User=pi
 Group=pi
 StandardInput=tty
@@ -14,17 +15,15 @@ Environment=DISPLAY=:0
 Environment=XAUTHORITY=/home/pi/.Xauthority
 Environment=XDG_RUNTIME_DIR=/run/user/1000
 WorkingDirectory=/home/pi/dash/
-#ExecStartPre=/bin/sleep 2
-ExecStart=/home/pi/dash/bin/dash
+ExecStart=/home/pi/dash/run_dash.sh
 Restart=on-failure
 RestartSec=10s
 KillMode=process
 TimeoutSec=infinity
-Environment=DISPLAY=:0
 PermissionsStartOnly=true
 ExecStartPre=/bin/chmod 666 /dev/tty7
 
 [Install]
-WantedBy=graphical.target
+WantedBy=multi-user.target
 
 

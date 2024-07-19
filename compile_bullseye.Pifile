@@ -20,8 +20,5 @@ INSTALL 777 "scripts/saab.sh" "/root/run.sh"
 RUN bash /root/run.sh 
 RUN rm /root/run.sh
 
-INSTALL 777 "scripts/run_dash.sh" "/home/pi/dash/run_dash.sh"
 
-# Add autologin and dash service
-INCLUDE dash_service.Pifile
-INCLUDE configuration.Pifile
+

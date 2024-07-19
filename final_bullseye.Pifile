@@ -2,11 +2,15 @@
 RUN mkdir -p /home/pi/.config/openDsh
 INSTALL "scripts/dash.conf" "/home/pi/.config/openDsh/dash.conf"
 
+INSTALL 777 "scripts/run_dash.sh" "/home/pi/dash/run_dash.sh"
+
 # Install openauto conf
 INSTALL "scripts/openauto.ini" "/home/pi/dash/openauto.ini"
 
 # Add udev rules
 INSTALL "scripts/51-dashusb.rules" "/etc/udev/rules.d/"
+
+# INSTALL "splash.png" "/usr/share/plymouth/themes/pix/splash.png"
 
 INSTALL "scripts/50-monitor.conf" "/etc/X11/xorg.conf.d/50-monitor.conf"
 INSTALL "scripts/52-touchscreen-rotate.conf" "/etc/X11/xorg.conf.d/52-touchscreen-rotate.conf"
